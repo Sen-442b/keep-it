@@ -1,0 +1,26 @@
+.note-nav {
+  min-width: 10vh;
+
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+.align-items-start {
+  display: flex;
+  align-items: flex-start;
+}
+
+.margin-zero {
+  margin: 0;
+}
+
+.search-container {
+  width: 400px;
+  height: 20px;
+}
+
+.search-input {
+  width: 100%;
+  line-height: 100%;
+  background: transparent;
+}

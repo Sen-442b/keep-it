@@ -1,0 +1,69 @@
+.notes-wrapper {
+  max-width: 30rem;
+
+  gap: 2rem;
+  word-break: break-all;
+
+  background-color: aquamarine;
+  position: relative;
+}
+.notes-editable {
+  padding: 1rem;
+  height: 100%;
+}
+.notes-title {
+  font-size: 1.2rem;
+  background-color: #86efac;
+  outline: none;
+  border: none;
+}
+.notes-content {
+  height: 5rem;
+  background-color: #ecfccb;
+  outline: 2px solid grey;
+  word-break: break-all;
+  overflow-y: scroll;
+}
+
+.notes-title:empty::before {
+  content: attr(custom-placeholder);
+  color: hsl(208, 7%, 97%);
+  font-weight: 600;
+}
+.notes-content:empty::before {
+  content: attr(custom-placeholder);
+  color: hsl(208, 7%, 97%);
+  font-weight: 600;
+}
+.notes-title:focus {
+  outline: none;
+}
+.bold-text {
+  font-weight: bold;
+}
+
+.italic-text {
+  font-style: italic;
+}
+
+.strike-text {
+  text-decoration: line-through;
+}
+
+.uppercase-text {
+  text-transform: uppercase;
+}
+
+.lowercase-text {
+  text-transform: lowercase;
+}
+
+.capitalize-text {
+  text-transform: capitalize;
+}
+
+.notes-pos-abs-top-right {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+}
