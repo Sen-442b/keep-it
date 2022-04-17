@@ -14,6 +14,7 @@ import { v4 as uuid } from "uuid";
 
 export const getAllNotesHandler = function (schema, request) {
   const user = requiresAuth.call(this, request);
+  console.log(user);
   if (!user) {
     return new Response(
       404,
@@ -158,6 +159,41 @@ export const archiveNoteHandler = function (schema, request) {
       {},
       { archives: user.archives, notes: user.notes }
     );
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
+};
+
+/**
+ * This handler handles transferring of  note to trash
+ * send POST Request at /notes/transfer/:noteId
+ * body contains {note}
+ * */
+
+export const trashNoteHandler = function (schema, request) {
+  const user = requiresAuth.call(this, request);
+  try {
+    if (!user) {
+      return new Response(
+        404,
+        {},
+        {
+          errors: ["The email you entered is not Registered. Not Found error"],
+        }
+      );
+    }
+    const { noteId } = request.params;
+    const trashNote = user.notes.filter((note) => note._id === noteId)[0];
+    user.notes = user.notes.filter((note) => note._id !== noteId);
+    user.trash.push({ ...trashNote });
+    this.db.users.update({ _id: user._id }, user);
+    return new Response(201, {}, { trash: user.trash, notes: user.notes });
   } catch (error) {
     return new Response(
       500,
