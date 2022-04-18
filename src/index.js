@@ -11,6 +11,7 @@ import { GlobalContextProvider } from "./global-context/global-variables";
 import { NotesContextProvider } from "./global-context/notes-context";
 import { ArchiveContextProvider } from "./global-context/archive-context";
 import { TrashContextProvider } from "./global-context/trash-context";
+import { LabelContextProvider } from "./global-context/label-context";
 
 // Call make Server
 makeServer();
@@ -19,17 +20,19 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <GlobalContextProvider>
-        <AlertTextContextProvider>
-          <NotesContextProvider>
-            <AuthContextProvider>
-              <TrashContextProvider>
-                <ArchiveContextProvider>
-                  <App />
-                </ArchiveContextProvider>
-              </TrashContextProvider>
-            </AuthContextProvider>
-          </NotesContextProvider>
-        </AlertTextContextProvider>
+        <LabelContextProvider>
+          <AlertTextContextProvider>
+            <NotesContextProvider>
+              <AuthContextProvider>
+                <TrashContextProvider>
+                  <ArchiveContextProvider>
+                    <App />
+                  </ArchiveContextProvider>
+                </TrashContextProvider>
+              </AuthContextProvider>
+            </NotesContextProvider>
+          </AlertTextContextProvider>
+        </LabelContextProvider>
       </GlobalContextProvider>
     </BrowserRouter>
   </React.StrictMode>,

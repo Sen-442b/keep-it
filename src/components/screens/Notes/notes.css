@@ -1,7 +1,8 @@
 .notes-wrapper {
-  max-width: 30rem;
+  width: max-content;
 
-  gap: 2rem;
+  padding: 1rem;
+
   word-break: break-all;
 
   background-color: aquamarine;
@@ -66,4 +67,9 @@
   position: absolute;
   top: 0.5rem;
   right: 1rem;
+}
+
+.content-wrapper {
+  border: 2px solid black;
+  margin: 2rem;
 }

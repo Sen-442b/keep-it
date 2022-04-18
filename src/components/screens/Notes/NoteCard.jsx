@@ -1,6 +1,5 @@
 import axios from "axios";
-import React from "react";
-import { useState } from "react/cjs/react.production.min";
+import React, { useState } from "react";
 
 import { useGlobalVarContext } from "../../../global-context/global-variables";
 import { useNotesContext } from "../../../global-context/notes-context";
@@ -17,8 +16,17 @@ const NoteCard = ({ initObj, noteObj, editObj, setEditObj, setNote }) => {
   const { dispatch } = useNotesContext();
   const { token } = useGlobalVarContext();
 
-  const { _id, title, content, isPinned, colorPref, stylePref, priority } =
-    noteObj;
+  const {
+    _id,
+    title,
+    content,
+    isPinned,
+    colorPref,
+    stylePref,
+    priority,
+    labelOnNote,
+    dateAdded,
+  } = noteObj;
   const { noteId } = editObj;
 
   const deleteFromNotesService = async (encToken, noteId) => {
@@ -75,7 +83,12 @@ const NoteCard = ({ initObj, noteObj, editObj, setEditObj, setNote }) => {
   return (
     <div className="notes-wrapper" style={{ backgroundColor: colorPref }}>
       <h3 className="fs-mdm">{title}</h3>
-      <p className={stylePref.toString().replaceAll(",", " ")}>{content}</p>
+      <div className="content-wrapper">
+        <p className={stylePref.toString().replaceAll(",", " ")}>{content}</p>
+      </div>
+      <div className="spc-btwn">
+        <p>Labels:{labelOnNote.join(", ")}</p>
+      </div>
       <div className="flex-f-end">
         <div>
           <label htmlFor="priority">Priority: </label>

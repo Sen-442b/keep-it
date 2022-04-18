@@ -23,3 +23,14 @@ export const restoreTrashService = async (encToken, noteId) => {
     console.log(error);
   }
 };
+
+export const deleteTrashService = async (encToken, noteId) => {
+  try {
+    const response = await axios.delete(`/api/trash/${noteId}`, {
+      headers: { authorization: encToken },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

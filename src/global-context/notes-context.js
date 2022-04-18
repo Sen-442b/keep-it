@@ -7,7 +7,7 @@ const initObj = {
   notes: [],
   sortByTime: "new-to-old",
   filterByPriority: [],
-  label: [],
+  filterByLabel: [],
 };
 const notesReducer = (state, action) => {
   switch (action.type) {
@@ -29,7 +29,14 @@ const notesReducer = (state, action) => {
             filterByPriority: [...state.filterByPriority, action.payload],
           };
     case "LABEL":
-      return { ...state, label: [...state] };
+      return state.filterByLabel.includes(action.payload)
+        ? {
+            ...state,
+            filterByLabel: state.filterByLabel.filter(
+              (lbl) => lbl !== action.payload
+            ),
+          }
+        : { ...state, filterByLabel: [...state.filterByLabel, action.payload] };
 
     default:
       break;
