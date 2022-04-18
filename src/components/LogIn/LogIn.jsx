@@ -103,6 +103,7 @@ const LogIn = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            navigateTo("/notes");
             return userLoginHandler(userEmail, userPassword, persistUser);
           }}
         >

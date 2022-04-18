@@ -1,9 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useNotesContext } from "../../global-context/notes-context";
 import { useLabelContext } from "../../global-context/label-context";
 
 function Aside() {
+  const navigate = useNavigate();
   const { state, dispatch } = useNotesContext();
 
   const { sortByTime, filterByPriority, filterByLabel } = state;
@@ -13,7 +14,7 @@ function Aside() {
     <nav>
       <div className="flex-column gap-sml">
         <div>
-          <NavLink to="/"> Notes</NavLink>
+          <NavLink to="/notes"> Notes</NavLink>
         </div>
         <div>
           <NavLink to="/archive">Archive</NavLink>
@@ -139,7 +140,9 @@ function Aside() {
           onClick={() => {
             localStorage.removeItem("notesToken") ||
               sessionStorage.removeItem("notesToken");
+            navigate("/home");
           }}
+          className="btn btn-outlined"
         >
           Logout
         </button>
