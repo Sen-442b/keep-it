@@ -71,3 +71,34 @@ export const restoreFromTrashHandler = function (schema, request) {
   this.db.users.update({ _id: user._id }, user);
   return new Response(200, {}, { trash: user.trash, notes: user.notes });
 };
+
+/* Delete Trash
+DELETE :"/api/trash/:noteId"
+
+*/
+export const deleteTrashHandler = function (schema, request) {
+  const user = requiresAuth.call(this, request);
+  try {
+    if (!user) {
+      return new Response(
+        404,
+        {},
+        {
+          errors: ["The email you entered is not Registered. Not Found error"],
+        }
+      );
+    }
+    const noteId = request.params.noteId;
+    user.trash = user.trash.filter((item) => item._id !== noteId);
+    this.db.users.update({ _id: user._id }, user);
+    return new Response(200, {}, { trash: user.trash });
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
+};

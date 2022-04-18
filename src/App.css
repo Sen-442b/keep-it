@@ -1,3 +1,4 @@
+@import url("https://prefix-ui.netlify.app/global.css");
 @import url("./components/NavBar/NavBar.css");
 @import url("./components/LogIn/log-in.css");
 @import url("./components/screens/Notes/notes.css");

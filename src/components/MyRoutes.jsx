@@ -12,6 +12,7 @@ import { useGlobalVarContext } from "../global-context/global-variables";
 import LogIn from "./LogIn/LogIn";
 import PrivateRoutes from "./PrivateRoutes";
 import Archive from "./screens/Archive/Archive";
+import LabelTags from "./screens/LabelTags/LabelTags";
 import Notes from "./screens/Notes/Notes";
 import Trash from "./screens/Trash/Trash";
 
@@ -23,6 +24,14 @@ const MyRoutes = () => {
     <Routes>
       <Route
         path="/"
+        element={
+          <PrivateRoutes>
+            <Notes />
+          </PrivateRoutes>
+        }
+      />
+      <Route
+        path="/home"
         element={
           <PrivateRoutes>
             <Notes />
@@ -47,6 +56,8 @@ const MyRoutes = () => {
       />
       <Route path="/log-in" element={<LogIn />} />
       <Route path="/mock" element={<MockmanEs />} />
+
+      <Route path="/labels/:labelId" element={<LabelTags />} />
     </Routes>
   );
 };

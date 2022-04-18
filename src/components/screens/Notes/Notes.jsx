@@ -8,6 +8,8 @@ import { editNotesService } from "../../../services/notes-services";
 
 import axios from "axios";
 import NoteCard from "./NoteCard";
+import { useLabelContext } from "../../../global-context/label-context";
+import Labels from "./Labels";
 const modules = {
   toolbar: [
     [{ header: [1, 2, false] }],
@@ -44,14 +46,16 @@ const initObj = {
   isPinned: false,
   colorPref: "#93c5fd",
   priority: "low",
-  timeCreated: {},
-  dateAdded: {},
+  timeCreated: "",
+  dateAdded: "",
+  labelOnNote: [],
 };
 const Notes = () => {
   const [note, setNote] = useState(initObj);
   const { title, content, stylePref, colorPref, isPinned, priority } = note;
+  const [inputLbl, setInputLbl] = useState("");
   const { state, dispatch } = useNotesContext();
-  const { notes, sortByTime, filterByPriority } = state;
+  const { notes, sortByTime, filterByPriority, filterByLabel } = state;
   const [editObj, setEditObj] = useState({
     isEditing: false,
     noteId: "",
@@ -59,6 +63,7 @@ const Notes = () => {
 
   const { isEditing, noteId } = editObj;
   const { token } = useGlobalVarContext();
+  const { state: labelState, dispatch: labelDispatch } = useLabelContext();
 
   const changeStylePref = (pref) => {
     setNote((prevObj) => {
@@ -113,8 +118,6 @@ const Notes = () => {
       const response = await postToNotesService(encToken, note);
 
       dispatch({ type: "ADD_NOTES", payload: response.data.notes });
-
-      setNote(() => ({ ...initObj }));
     } catch (error) {
       console.log(error);
     }
@@ -146,14 +149,27 @@ const Notes = () => {
     return notesArr;
   };
 
-  const getFilteredData = (sortedArr, filterByPriority) =>
+  const getFilteredPriorityData = (sortedArr, filterByPriority) =>
     filterByPriority.length !== 0
       ? sortedArr.filter((item) => filterByPriority.includes(item.priority))
       : sortedArr;
 
+  const getFilteredLabelData = (sortedArr, filterByLabel) => {
+    console.log(filterByLabel, "by label");
+    console.log(sortedArr, "array here");
+
+    return filterByLabel.length !== 0
+      ? sortedArr.filter((item) =>
+          item.labelOnNote.find((tag) => filterByLabel.includes(tag))
+        )
+      : sortedArr;
+  };
   const sortedNotesArr = getSortedNotes(notes);
 
-  const filteredSortedNotes = getFilteredData(sortedNotesArr, filterByPriority);
+  const filteredSortedNotes = getFilteredLabelData(
+    getFilteredPriorityData(sortedNotesArr, filterByPriority),
+    filterByLabel
+  );
 
   return (
     <div>
@@ -280,6 +296,45 @@ const Notes = () => {
                 title="Choose a Color"
               />
               <div>
+                <div>
+                  <label htmlFor="label">Label</label>
+                  <input
+                    type="text"
+                    id="label"
+                    value={inputLbl}
+                    onChange={(e) => setInputLbl(e.target.value)}
+                    onKeyUp={(e) => {
+                      if (
+                        e.target.value &&
+                        e.key === "Enter" &&
+                        !labelState.label.includes(e.target.value.toLowerCase())
+                      ) {
+                        labelDispatch({
+                          type: "ADD_LABEL",
+                          payload: inputLbl.toLowerCase().trim(),
+                        });
+                        setInputLbl("");
+                      }
+                    }}
+                  />
+                </div>
+                {labelState.label.length !== 0 && (
+                  <div className="flex-column">
+                    {labelState.label.length !== 0 &&
+                      labelState.label.map((tag, index) => {
+                        return (
+                          <Labels
+                            tag={tag}
+                            key={index}
+                            note={note}
+                            setNote={setNote}
+                          />
+                        );
+                      })}
+                  </div>
+                )}
+              </div>
+              <div>
                 <label htmlFor="priority">Priority: </label>
                 <select
                   id="priority"
@@ -325,6 +380,8 @@ const Notes = () => {
                   className="btn alert-primary"
                   onClick={() => {
                     addToNotesListHandler(token, note);
+
+                    setNote(() => ({ ...initObj }));
                   }}
                 >
                   Add Note

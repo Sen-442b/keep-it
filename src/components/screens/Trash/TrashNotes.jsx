@@ -2,7 +2,10 @@ import React from "react";
 import { useGlobalVarContext } from "../../../global-context/global-variables";
 import { useNotesContext } from "../../../global-context/notes-context";
 import { useTrashContext } from "../../../global-context/trash-context";
-import { restoreTrashService } from "../../../services/trash-services";
+import {
+  deleteTrashService,
+  restoreTrashService,
+} from "../../../services/trash-services";
 
 function TrashNotes({ noteItem }) {
   const { token } = useGlobalVarContext();
@@ -15,13 +18,19 @@ function TrashNotes({ noteItem }) {
     trashDispatch({ type: "ADD_TRASH", payload: resp.data.trash });
     notesDispatch({ type: "ADD_NOTES", payload: resp.data.notes });
   };
+
+  const deleteTrashHandler = async (encToken, noteId) => {
+    const resp = await deleteTrashService(encToken, noteId);
+    console.log(resp);
+    trashDispatch({ type: "ADD_TRASH", payload: resp.data.trash });
+  };
   return (
     <div class="notes-wrapper" style={{ backgroundColor: colorPref }}>
       <h3 className="fs-mdm">{title}</h3>
       <p className={stylePref.toString().replaceAll(",", " ")}>{content}</p>
       <div className="flex-f-end">
         <button onClick={() => restoreTrashHandler(token, _id)}>Restore</button>
-        <button>Delete</button>
+        <button onClick={() => deleteTrashHandler(token, _id)}>Delete</button>
       </div>
       <button
         className="notes-pos-abs-top-right"
