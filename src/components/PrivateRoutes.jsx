@@ -10,11 +10,7 @@ function PrivateRoutes({ children }) {
   console.log(isUserAuthenticated);
   console.log(token);
 
-  return token ? (
-    children
-  ) : (
-    <Navigate to="/log-in" state={{ from: location }} replace />
-  );
+  return token ? children : <Navigate to="/log-in" replace />;
 }
 
 export default PrivateRoutes;

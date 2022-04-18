@@ -1,6 +1,7 @@
 import MockmanEs from "mockman-js";
 import React from "react";
 import {
+  Link,
   Navigate,
   Route,
   Routes,
@@ -18,20 +19,12 @@ import Trash from "./screens/Trash/Trash";
 
 const MyRoutes = () => {
   const { isUserAuthenticated } = useAuthContext();
-  console.log("here");
-  console.log(isUserAuthenticated);
+
   return (
     <Routes>
+      <Route path="/home" element={<Home />} />
       <Route
-        path="/"
-        element={
-          <PrivateRoutes>
-            <Notes />
-          </PrivateRoutes>
-        }
-      />
-      <Route
-        path="/home"
+        path="/notes"
         element={
           <PrivateRoutes>
             <Notes />
@@ -63,3 +56,18 @@ const MyRoutes = () => {
 };
 
 export default MyRoutes;
+
+function Home() {
+  return (
+    <main className="flex-column flex-center modal-container">
+      <div className="modal-content text-align-center">
+        <h1 className="fs-lrg">Keep-it</h1>
+        <div>
+          <button className="btn btn-cta">
+            <Link to="/log-in">Login</Link>
+          </button>
+        </div>
+      </div>
+    </main>
+  );
+}
